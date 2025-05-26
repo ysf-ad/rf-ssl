@@ -1,0 +1,38 @@
+# Preprocessed data (large files)
+preprocessed-data/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+rf_mae_logs/
+
+# Model outputs
+rf_mae_output/
+
+# Jupyter notebooks checkpoints
+.ipynb_checkpoints/
+
+# PyTorch model files (optional - uncomment if you don't want to track models)
+# *.pt
+# *.pth 
