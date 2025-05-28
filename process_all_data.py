@@ -19,7 +19,13 @@ def process_rf32_file(path):
         tensor = torch.tensor(data).unsqueeze(0) 
         
         # High-quality spectrogram
-        spec = torchaudio.transforms.Spectrogram(n_fft=1024, hop_length=512)(tensor)
+        spec = torchaudio.transforms.Spectrogram(
+    n_fft=1024,
+    win_length=512,
+    hop_length=512,
+    window_fn=torch.hann_window
+)(tensor)
+
         log_spec = torch.log1p(spec)
 
         # Resize + normalize
