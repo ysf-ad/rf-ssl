@@ -6,10 +6,10 @@ from pathlib import Path
 
 def find_all_processed_files():
     """Find all processed .pt files in the dataset"""
-    processed_dir = Path("preprocessed-data")
+    processed_dir = Path("preprocessed-thz-data")
     
     if not processed_dir.exists():
-        print("Error: preprocessed-data directory not found!")
+        print("Error: preprocessed-thz-data directory not found!")
         return []
     
     all_files = []
@@ -61,7 +61,7 @@ def display_random_grid():
     
     # Create 4x4 grid
     fig, axes = plt.subplots(4, 4, figsize=(16, 16))
-    fig.suptitle('Random RF Signal Spectrograms', fontsize=16, fontweight='bold')
+    fig.suptitle('Random THz Signal Spectrograms (160 GHz sampling)', fontsize=16, fontweight='bold')
     
     axes = axes.flatten()
     
@@ -83,23 +83,23 @@ def display_random_grid():
                 # Assuming 224x224 spectrogram from the processing
                 height, width = spectrogram.shape
                 
-                # Time axis (x-axis) - assuming some time duration
+                # Time axis (x-axis) - THz signals are 16ms duration
                 time_ticks = np.linspace(0, width-1, 5)
-                time_labels = [f"{t:.1f}" for t in np.linspace(0, 1.0, 5)]  # 0 to 1 second
+                time_labels = [f"{t:.2f}" for t in np.linspace(0, 16, 5)]  # 0 to 16 ms
                 ax.set_xticks(time_ticks)
                 ax.set_xticklabels(time_labels, fontsize=6)
-                ax.set_xlabel('Time (s)', fontsize=7)
+                ax.set_xlabel('Time (ms)', fontsize=7)
                 
-                # Frequency axis (y-axis) - based on bandwidth
+                # Frequency axis (y-axis) - based on bandwidth around 10 GHz IF
                 freq_ticks = np.linspace(0, height-1, 5)
                 if "5 GHz" in file_info['bandwidth']:
-                    freq_labels = [f"{f:.1f}" for f in np.linspace(0, 2.5, 5)]  # 0 to 2.5 GHz
+                    freq_labels = [f"{f:.1f}" for f in np.linspace(7.5, 12.5, 5)]  # 5 GHz BW around 10 GHz IF
                 elif "10 GHz" in file_info['bandwidth']:
-                    freq_labels = [f"{f:.1f}" for f in np.linspace(0, 5.0, 5)]  # 0 to 5 GHz
+                    freq_labels = [f"{f:.1f}" for f in np.linspace(5.0, 15.0, 5)]  # 10 GHz BW around 10 GHz IF
                 elif "20 GHz" in file_info['bandwidth']:
-                    freq_labels = [f"{f:.1f}" for f in np.linspace(0, 10.0, 5)]  # 0 to 10 GHz
+                    freq_labels = [f"{f:.1f}" for f in np.linspace(0.0, 20.0, 5)]  # 20 GHz BW around 10 GHz IF
                 else:
-                    freq_labels = [f"{f:.1f}" for f in np.linspace(0, 5.0, 5)]  # default
+                    freq_labels = [f"{f:.1f}" for f in np.linspace(5.0, 15.0, 5)]  # default 10 GHz BW
                 
                 ax.set_yticks(freq_ticks)
                 ax.set_yticklabels(freq_labels, fontsize=6)
@@ -107,7 +107,7 @@ def display_random_grid():
                 
             else:
                 ax.text(0.5, 0.5, 'Failed to load', ha='center', va='center', transform=ax.transAxes)
-                ax.set_xlabel('Time (s)', fontsize=7)
+                ax.set_xlabel('Time (ms)', fontsize=7)
                 ax.set_ylabel('Frequency (GHz)', fontsize=7)
         else:
             ax.axis('off')

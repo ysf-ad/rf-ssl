@@ -1,5 +1,6 @@
 # Preprocessed data (large files)
 preprocessed-data/
+preprocessed-thz-data/
 
 # Python cache
 __pycache__/
