@@ -15,7 +15,7 @@ def main():
     # Set up paths
     output_dir = "./rf_mae_output"
     log_dir = "./rf_mae_logs"
-    data_path = "preprocessed-data"
+    data_path = "preprocessed-thz-data"
     
     # Create directories
     Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -27,21 +27,21 @@ def main():
         print("Please make sure you have run the preprocessing script first.")
         sys.exit(1)
     
-    # Build command similar to the original submitit command
     cmd = [
         "python", "rf_mae_pretrain.py",
-        "--batch_size", "32",  # Reduced from 64 for memory efficiency
-        "--model", "mae_vit_large_patch16",
+        "--batch_size", "64",
+        "--model", "mae_vit_small_patch16",
+        "--accum_iter", "2",
         "--norm_pix_loss",
         "--mask_ratio", "0.75",
-        "--epochs", "400",  # Reduced from 800 for faster training
+        "--epochs", "200",  # Reduced from 800 for speed
         "--warmup_epochs", "40",
         "--blr", "1.5e-4",
         "--weight_decay", "0.05",
         "--data_path", data_path,
         "--output_dir", output_dir,
         "--log_dir", log_dir,
-        "--num_workers", "4",
+        "--num_workers", "8",
         "--pin_mem"
     ]
     
@@ -52,7 +52,6 @@ def main():
     print(f"Data path: {data_path}")
     print("-" * 50)
     
-    # Run the command
     try:
         result = subprocess.run(cmd, check=True)
         print("Training completed successfully!")
